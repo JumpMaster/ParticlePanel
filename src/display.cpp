@@ -1,6 +1,6 @@
 #include "display.h"
-#include <neopixel.h>
 #include "letters.h"
+#include "neopixel.h"
 
 const int PIXEL_COUNT = 256;
 const int PIXEL_PIN = D2;
@@ -56,14 +56,14 @@ void Display::displayLetter(char letter, int *col, int charNum) {
       if (!up) {
         for (int r = 0; r < 8; r++) {
           int t = vPosition[charNum] + r;
-          if (t >= 0 && t <= 7)
-          strip.setPixelColor(num+vPosition[charNum], letters[l][r][c] == 1 ? mColor : 0);
+          if (t >= 0 && t < 8)
+            strip.setPixelColor(num+vPosition[charNum], letters[l][r][c] == 1 ? mColor : 0);
           num++;
         }
       } else {
         for (int r = 7; r >= 0; r--) {
           int t = vPosition[charNum] + r;
-          if (t >= 0 && t <= 7)
+          if (t >= 0 && t < 8)
             strip.setPixelColor(num-vPosition[charNum], letters[l][r][c] == 1 ? mColor : 0);
           num++;
         }
@@ -199,25 +199,10 @@ int Display::getUpdateTimer() {
 }
 
 void Display::kevtest(int a) {
-  if (a == 0) {
-    for (int i = 0; i < 100; i++)
-    vPosition[i] = -8;
-  } else if (a == 1) {
-    for (int i = 0; i < 100; i++)
-    vPosition[i] = 8;
-  } else if (a == 2) {
-    bool b;
-    for (int i = 0; i < 100; i++) {
-      if (b) {
-        vPosition[i] = -8;
-        b = false;
-      } else {
-        vPosition[i] = 8;
-        b = true;
-      }
-    }
-  }
-  Particle.publish("LOG", String::format("%d:%d", vPosition[0], vPosition[1]), PRIVATE);
+  int intBrightness = sizeof(mBrightness);
+  int intColor = sizeof(mColor);
+  int intUpdateTime = sizeof(masterCallbackTime);
+  Particle.publish("LOG", String::format("Color = %d : Brightness = %d : UpdateTime = %d", intColor, intBrightness, intUpdateTime), PRIVATE);
 }
 
 void Display::mainLoop() {

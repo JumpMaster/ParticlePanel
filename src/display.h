@@ -2,6 +2,7 @@
 #define Display_h
 
 #include "application.h"
+#include "publishqueue.h"
 
 enum Modes {
     show_text,
@@ -40,9 +41,10 @@ class Display
     int mColor = 255;
     int8_t hPosition = 32;
     int8_t vPosition[100];
-    
-    const uint8_t ADDR_BRIGHTNESS = 10;
-    const uint8_t ADDR_COLOR = 20;
-    const uint8_t ADDR_UPDATE_INTERVAL = 30;
+    PublishQueue pq;
+
+    const uint8_t ADDR_BRIGHTNESS = 0;
+    const uint8_t ADDR_COLOR = 4;
+    const uint8_t ADDR_UPDATE_INTERVAL = 8;
 };
 #endif
